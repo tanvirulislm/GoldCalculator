@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>সোনার ক্যালকুলেটর | Gold Calculator</title>
+    <meta name="description" content="ভরি, আনা, রতি, গ্রাম হিসাবে সোনার দাম, পুরাতন সোনা বিনিময় ও মজুরির হিসাব।" />
+    <meta name="theme-color" content="#171717" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f7f7f5;
+        --card: #fff;
+        --tx: #202124;
+        --mut: #6b7280;
+        --mut2: #9ca3af;
+        --bd: #e5e7eb;
+        --inbd: #d1d5db;
+        --p1: #c6a15b;
+        --p2: #b18a3e;
+        --on: #171717;
+        --ac: #a9853d;
+        --soft: #c6a15b14;
+        --ring: #c6a15b29;
+        --tint: #fbf8f0;
+        --tintbd: #e8dcc0;
+        --seg: #f3f4f6;
+        --red: #dc2626;
+        --grn: #15803d;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font-family:
+          Inter,
+          'Noto Sans Bengali',
+          'Hind Siliguri',
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      header {
+        background: #171717;
+        border-bottom: 1px solid #303030;
+        color: #f9fafb;
+      }
+      .hin {
+        max-width: 1140px;
+        margin: 0 auto;
+        height: 72px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      #logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: contain;
+        flex: none;
+      }
+      .ttl {
+        flex: 1;
+        min-width: 0;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.375rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #f9fafb;
+      }
+      .ttl p {
+        margin: 2px 0 0;
+        font-size: 0.78rem;
+        color: #a1a1aa;
+      }
+      .wrap {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 24px 24px 48px;
+      }
+      .layout {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .col,
+      .side {
+        display: grid;
+        gap: 16px;
+        align-content: start;
+        min-width: 0;
+      }
+      @media (min-width: 1024px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr) 400px;
+        }
+        .side {
+          position: sticky;
+          top: 16px;
+        }
+      }
+      .seg {
+        display: inline-flex;
+        background: var(--seg);
+        border-radius: 10px;
+        padding: 3px;
+        gap: 2px;
+      }
+      .seg button {
+        border: 1px solid transparent;
+        background: none;
+        color: var(--mut);
+        height: 34px;
+        padding: 0 14px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-family: inherit;
+        transition: all 0.15s;
+      }
+      .seg button:hover {
+        color: var(--tx);
+      }
+      .seg button.on {
+        background: #fff;
+        color: var(--tx);
+        border-color: var(--bd);
+        box-shadow: inset 0 -2px 0 var(--p1);
+      }
+      header .seg {
+        background: #222;
+        border: 1px solid #303030;
+      }
+      header .seg button {
+        color: #a1a1aa;
+        height: 32px;
+      }
+      header .seg button.on {
+        background: #d4af6a;
+        color: #171717;
+        border-color: #d4af6a;
+        box-shadow: none;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        min-width: 0;
+      }
+      .card h2 {
+        margin: 0 0 16px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--tx);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .n {
+        background: var(--soft);
+        color: var(--ac);
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        flex: none;
+      }
+      label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #4b5563;
+        margin-bottom: 6px;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 46px;
+        padding: 0 12px;
+        border: 1px solid var(--inbd);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--tx);
+        font-size: 1rem;
+        font-weight: 500;
+        font-family: inherit;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      input:hover,
+      select:hover {
+        border-color: var(--mut2);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--p1);
+        box-shadow: 0 0 0 3px var(--ring);
+      }
+      input:disabled,
+      select:disabled {
+        background: #f3f4f6;
+        color: var(--mut2);
+      }
+      input::placeholder {
+        color: var(--mut2);
+      }
+      .row {
+        display: grid;
+        gap: 12px;
+      }
+      .c3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .c4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .mt {
+        margin-top: 16px;
+      }
+      .line {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.92rem;
+        padding: 8px 0;
+        color: var(--mut);
+      }
+      .line b {
+        color: var(--tx);
+        font-weight: 600;
+      }
+      .line.neg,
+      .line.neg b {
+        color: var(--red);
+      }
+      .hint {
+        font-size: 0.78rem;
+        color: var(--mut);
+        margin: 10px 0 0;
+      }
+      .tot {
+        background: var(--bg);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+      }
+      .tot span:last-child {
+        color: var(--tx);
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .modes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .modes button {
+        border: 1px solid var(--bd);
+        background: #fff;
+        color: var(--mut);
+        border-radius: 10px;
+        min-height: 56px;
+        padding: 10px 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.84rem;
+        font-family: inherit;
+        transition: all 0.15s;
+        line-height: 1.35;
+      }
+      .modes button:hover {
+        border-color: var(--inbd);
+      }
+      .modes button.on {
+        border-color: var(--p1);
+        color: var(--tx);
+        background: var(--tint);
+        box-shadow: inset 0 -2px 0 var(--p1);
+      }
+      .final {
+        background: var(--tint);
+        border: 1px solid var(--tintbd);
+        display: flex;
+        flex-direction: column;
+      }
+      .final .tot {
+        order: 1;
+        background: none;
+        padding: 0;
+        margin: 0 0 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+      .final .tot span:first-child {
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: var(--ac);
+      }
+      .final .tot span:last-child {
+        color: var(--tx);
+      }
+      .final .line {
+        order: 2;
+        border-top: 1px solid var(--tintbd);
+      }
+      .big {
+        font-size: 2.25rem !important;
+        font-weight: 700 !important;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+      }
+      .recv {
+        color: var(--grn) !important;
+      }
+      .btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .btns button {
+        height: 46px;
+        border-radius: 8px;
+        border: 1px solid var(--inbd);
+        background: #fff;
+        color: #374151;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.92rem;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      .btns button:hover {
+        background: #f9fafb;
+      }
+      .btns .pri {
+        grid-column: 1/-1;
+        background: var(--p1);
+        color: var(--on);
+        border-color: var(--p1);
+      }
+      .btns .pri:hover {
+        background: var(--p2);
+        border-color: var(--p2);
+      }
+      .btns .pri:active {
+        filter: brightness(0.95);
+      }
+      .btns button:focus-visible,
+      .seg button:focus-visible,
+      .modes button:focus-visible,
+      .dots button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--ring);
+      }
+      .fm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.8rem;
+        color: var(--mut);
+      }
+      .dots button {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 1px var(--inbd);
+        cursor: pointer;
+        margin: 0 3px;
+        padding: 0;
+      }
+      .dots button.on {
+        box-shadow: 0 0 0 2px var(--p1);
+      }
+      .disc {
+        font-size: 0.76rem;
+        color: var(--mut2);
+        text-align: center;
+        margin: 0;
+      }
+      .hide {
+        display: none !important;
+      }
+      @media (max-width: 767px) {
+        .hin {
+          height: 64px;
+          padding: 0 16px;
+        }
+        .ttl p {
+          display: none;
+        }
+        h1 {
+          font-size: 1.2rem;
+        }
+        .wrap {
+          padding: 16px 12px 40px;
+        }
+        .card {
+          padding: 16px;
+        }
+        .big {
+          font-size: 1.75rem !important;
+        }
+      }
+      @media (max-width: 420px) {
+        .c4 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .modes button {
+          font-size: 0.78rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="hin">
+        <img id="logo" alt="Gold Calculator" src="GoldCalculator.png" />
+        <div class="ttl">
+          <h1 data-i="title"></h1>
+          <p data-i="sub"></p>
+        </div>
+        <div class="seg" id="langSeg"><button data-l="bn">বাং</button><button data-l="en">EN</button></div>
+      </div>
+    </header>
+    <div class="wrap">
+      <div class="layout">
+        <div class="col">
+          <section class="card" id="cfg">
+            <h2><span class="n">1</span><span data-i="rateT"></span></h2>
+            <div class="row c3">
+              <div>
+                <label for="karat" data-i="karat"></label>
+                <select id="karat">
+                  <option value="22">22K</option>
+                  <option value="21">21K</option>
+                  <option value="18">18K</option>
+                  <option value="san" data-i="san"></option>
+                </select>
+              </div>
+              <div><label for="rate" data-i="price"></label><input id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="0" /></div>
+              <div>
+                <label data-i="unit"></label>
+                <div class="seg" id="unitSeg" style="display: flex"><button data-u="bhori" style="flex: 1" data-i="bhori"></button><button data-u="gram" style="flex: 1" data-i="gram"></button></div>
+              </div>
+            </div>
+            <p class="hint" data-i="rateHint"></p>
+          </section>
+
+          <section class="card">
+            <h2><span class="n">2</span><span data-i="typeT"></span></h2>
+            <div class="modes">
+              <button data-m="new" data-i="mNew"></button>
+              <button data-m="old" data-i="mOld"></button>
+              <button data-m="both" data-i="mBoth"></button>
+            </div>
+          </section>
+
+          <section class="card" id="panelNew">
+            <h2><span class="n">3</span><span data-i="newT"></span></h2>
+            <div class="row c4" data-w="new">
+              <div><label data-i="ana"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="ana" /></div>
+              <div><label data-i="roti"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="roti" /></div>
+              <div><label data-i="point"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="point" /></div>
+              <div><label data-i="gramL"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="gram" /></div>
+            </div>
+            <p class="hint" data-i="conv"></p>
+            <div class="line mt"><span data-i="goldVal"></span><b id="nVal"></b></div>
+            <div class="row c3 mt">
+              <div><label data-i="mk"></label><input id="mk" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+              <div>
+                <label data-i="mkType"></label
+                ><select id="mkType">
+                  <option value="pct">%</option>
+                  <option value="fix">৳</option>
+                </select>
+              </div>
+              <div><label data-i="vat"></label><input id="vat" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+            </div>
+            <div class="mt"><label data-i="other"></label><input id="other" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+            <div class="line mt"><span data-i="mkAmt"></span><b id="nMk"></b></div>
+            <div class="line"><span data-i="vatAmt"></span><b id="nVat"></b></div>
+            <div class="tot"><span data-i="newTotal"></span><span id="nTot"></span></div>
+          </section>
+
+          <section class="card" id="panelOld">
+            <h2><span class="n" id="oldNum">4</span><span data-i="oldT"></span></h2>
+            <div class="row c4" data-w="old">
+              <div><label data-i="ana"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="ana" /></div>
+              <div><label data-i="roti"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="roti" /></div>
+              <div><label data-i="point"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="point" /></div>
+              <div><label data-i="gramL"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="gram" /></div>
+            </div>
+            <div class="mt"><label data-i="ded"></label><input id="ded" type="number" inputmode="decimal" min="0" max="100" step="any" value="12" /></div>
+            <div class="line mt"><span data-i="before"></span><b id="oVal"></b></div>
+            <div class="line neg"><span data-i="dedAmt"></span><b id="oDed"></b></div>
+            <div class="tot"><span data-i="exch"></span><span id="oTot"></span></div>
+          </section>
+        </div>
+        <aside class="side">
+          <section class="card final">
+            <h2 data-i="finalT"></h2>
+            <div class="line" id="fNewRow"><span data-i="newTotal"></span><b id="fNew"></b></div>
+            <div class="line neg" id="fOldRow"><span data-i="minusOld"></span><b id="fOld"></b></div>
+            <div class="tot mt"><span id="fLabel"></span><span class="big" id="fAmt"></span></div>
+          </section>
+
+          <div class="btns">
+            <button class="pri" id="dlBtn" data-i="dl"></button>
+            <button id="shareBtn" data-i="share"></button>
+            <button id="resetBtn" data-i="reset"></button>
+          </div>
+          <div class="fm">
+            <span data-i="size"></span>
+            <div class="seg" id="fmtSeg"><button data-s="sq">1:1</button><button data-s="pt">4:5</button></div>
+          </div>
+          <p class="disc" data-i="disc"></p>
+          <p class="disc" id="toast" style="color: var(--grn); min-height: 1em"></p>
+          <div class="fm dots" id="themeRow">
+            <span data-i="theme"></span
+            ><span
+              ><button data-th="gold" style="background: #c6a15b"></button><button data-th="emerald" style="background: #047857"></button><button data-th="maroon" style="background: #9f1239"></button><button data-th="navy" style="background: #1d4ed8"></button
+              ><button data-th="plum" style="background: #7e22ce"></button
+            ></span>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      const LOGO = 'GoldCalculator.png' // ← your logo file (same folder as index.html)
+      const BHORI_G = 11.664,
+        PTS = 960
+      const FF = 'Inter,"Noto Sans Bengali","Hind Siliguri",system-ui,"Segoe UI",sans-serif'
+      const T = {
+        bn: {
+          title: 'সোনার ক্যালকুলেটর',
+          sub: 'সোনার দাম, ওজন ও বিনিময় হিসাব',
+          rateT: 'আজকের সোনার দাম',
+          karat: 'ক্যারেট',
+          san: 'সনাতন',
+          price: 'দাম (৳)',
+          unit: 'একক',
+          bhori: 'প্রতি ভরি',
+          gram: 'প্রতি গ্রাম',
+          rateHint: 'প্রতিটি ক্যারেটের দাম আলাদা সংরক্ষিত থাকে।',
+          typeT: 'হিসাবের ধরন',
+          mNew: 'নতুন সোনা ক্রয়',
+          mOld: 'পুরাতন সোনা বিক্রি',
+          mBoth: 'পুরাতন দিয়ে নতুন ক্রয়',
+          newT: 'নতুন সোনা',
+          oldT: 'পুরাতন সোনা',
+          ana: 'আনা',
+          roti: 'রতি',
+          point: 'পয়েন্ট',
+          gramL: 'গ্রাম',
+          conv: '১ ভরি = ১৬ আনা = ৯৬ রতি = ৯৬০ পয়েন্ট = ১১.৬৬৪ গ্রাম',
+          goldVal: 'সোনার দাম',
+          mk: 'মজুরি',
+          mkType: 'ধরন',
+          vat: 'ভ্যাট %',
+          other: 'অন্যান্য খরচ (৳)',
+          mkAmt: 'মজুরি',
+          vatAmt: 'ভ্যাট',
+          newTotal: 'নতুন সোনার মোট দাম',
+          ded: 'কর্তন % (ভ্যাটসহ)',
+          before: 'কর্তনের আগে দাম',
+          dedAmt: 'কর্তন',
+          exch: 'বিনিময় মূল্য',
+          finalT: 'চূড়ান্ত হিসাব',
+          minusOld: 'বাদ: পুরাতন সোনার মূল্য',
+          pay: 'আপনাকে দিতে হবে',
+          recv: 'আপনি পাবেন',
+          dl: '⬇ ছবি ডাউনলোড',
+          share: 'শেয়ার',
+          reset: 'রিসেট',
+          size: 'ছবির সাইজ',
+          theme: 'থিম',
+          copied: 'কপি হয়েছে ✓',
+          disc: 'এটি আনুমানিক হিসাব। চূড়ান্ত দাম জুয়েলারির রেট ও চার্জের উপর নির্ভর করে।',
+          bh: 'ভরি',
+          gr: 'গ্রাম',
+        },
+        en: {
+          title: 'Gold Calculator',
+          sub: 'Gold price, weight & exchange',
+          rateT: "Today's Gold Price",
+          karat: 'Karat',
+          san: 'Traditional',
+          price: 'Price (৳)',
+          unit: 'Unit',
+          bhori: 'Per Bhori',
+          gram: 'Per Gram',
+          rateHint: 'Each karat keeps its own saved rate.',
+          typeT: 'Calculation Type',
+          mNew: 'New Gold Purchase',
+          mOld: 'Sell Old Gold',
+          mBoth: 'Exchange + New Purchase',
+          newT: 'New Gold',
+          oldT: 'Old Gold',
+          ana: 'Ana',
+          roti: 'Roti',
+          point: 'Point',
+          gramL: 'Gram',
+          conv: '1 Bhori = 16 Ana = 96 Roti = 960 Point = 11.664 g',
+          goldVal: 'Gold Value',
+          mk: 'Making Charge',
+          mkType: 'Type',
+          vat: 'VAT %',
+          other: 'Other Charge (৳)',
+          mkAmt: 'Making Charge',
+          vatAmt: 'VAT',
+          newTotal: 'Total New Gold Price',
+          ded: 'Deduction % (incl. VAT)',
+          before: 'Value before deduction',
+          dedAmt: 'Deduction',
+          exch: 'Exchange Value',
+          finalT: 'Final Calculation',
+          minusOld: 'Minus: Old Gold Value',
+          pay: 'Amount to Pay',
+          recv: 'You Will Receive',
+          dl: '⬇ Download Image',
+          share: 'Share',
+          reset: 'Reset',
+          size: 'Image size',
+          theme: 'Theme',
+          copied: 'Copied ✓',
+          disc: "Estimates only. Final price depends on your jeweller's rate and charges.",
+          bh: 'Bhori',
+          gr: 'g',
+        },
+      }
+      const $ = id => document.getElementById(id)
+      const S = { lang: 'bn', unit: 'bhori', mode: 'new', karat: '22', rates: {}, ded: 12, mk: 0, mkType: 'pct', vat: 0, other: 0, fmt: 'sq', theme: 'gold' }
+      let card = { rows: [], final: '', amt: '', recv: false, rate: '', text: '' }
+
+      const load = () => {
+        try {
+          Object.assign(S, JSON.parse(localStorage.getItem('goldCalcV3') || '{}'))
+        } catch (e) {}
+      }
+      const save = () => {
+        try {
+          localStorage.setItem('goldCalcV3', JSON.stringify(S))
+        } catch (e) {}
+      }
+      const num = v => Math.max(0, parseFloat(v) || 0)
+      const fmt = v => '৳' + (+v || 0).toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      const t = k => T[S.lang][k]
+
+      const TH = {
+        gold: { bg: '#F7F7F5', card: '#FFFFFF', tx: '#202124', mut: '#6B7280', bd: '#E5E7EB', p1: '#C6A15B', p2: '#B18A3E', on: '#171717', ac: '#A9853D', hd1: '#171717', hd2: '#222222', red: '#DC2626' },
+        emerald: { bg: '#f4f1e8', card: '#fff', tx: '#1f2a24', mut: '#6b7a72', bd: '#e6e0cf', p1: '#047857', p2: '#065f46', on: '#fff', ac: '#047857', hd1: '#064e3b', hd2: '#047857', red: '#be123c' },
+        maroon: { bg: '#faf3ee', card: '#fff', tx: '#2b1a1a', mut: '#7a6666', bd: '#ecdcd3', p1: '#9f1239', p2: '#7f1d1d', on: '#fff', ac: '#9f1239', hd1: '#4c0f1b', hd2: '#7f1d1d', red: '#be123c' },
+        navy: { bg: '#eef2f7', card: '#fff', tx: '#16223a', mut: '#64748b', bd: '#dbe3ee', p1: '#1d4ed8', p2: '#1e3a8a', on: '#fff', ac: '#1d4ed8', hd1: '#0f2557', hd2: '#1e3a8a', red: '#be123c' },
+        plum: { bg: '#f6f1fa', card: '#fff', tx: '#241636', mut: '#74688a', bd: '#e5daf0', p1: '#7e22ce', p2: '#581c87', on: '#fff', ac: '#7e22ce', hd1: '#3b0f63', hd2: '#6b21a8', red: '#be123c' },
+      }
+      const th = () => TH[S.theme] || TH.gold
+      function applyTheme() {
+        const T_ = th(),
+          r = document.documentElement.style
+        for (const k in T_) r.setProperty('--' + k, T_[k])
+        r.setProperty('--soft', T_.p1 + '14')
+        r.setProperty('--ring', T_.p1 + '29')
+        if (S.theme !== 'gold') {
+          r.setProperty('--tint', T_.p1 + '12')
+          r.setProperty('--tintbd', T_.p1 + '55')
+        } else {
+          r.removeProperty('--tint')
+          r.removeProperty('--tintbd')
+        }
+        document.querySelector('meta[name=theme-color]').content = '#171717'
+      }
+      const wtTxt = bh => `${bh.toFixed(4)} ${t('bh')} (${(bh * BHORI_G).toFixed(3)} ${t('gr')})`
+
+      // logo (with graceful fallback)
+      const logo = $('logo')
+      const MARK =
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde7a1"/><stop offset=".5" stop-color="#e9b949"/><stop offset="1" stop-color="#a8701a"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M12 40l7-18h26l7 18-6 8H18z" fill="#fff6d6" stroke="#6b430b" stroke-width="2" stroke-linejoin="round"/></svg>',
+        )
+      logo.onerror = () => {
+        logo.onerror = null
+        logo.src = MARK
+      }
+
+      function applyLang() {
+        document.documentElement.lang = S.lang
+        document.querySelectorAll('[data-i]').forEach(e => (e.textContent = t(e.dataset.i)))
+        const on = (sel, attr, val) => document.querySelectorAll(sel).forEach(b => b.classList.toggle('on', b.dataset[attr] === val))
+        on('#langSeg button', 'l', S.lang)
+        on('#unitSeg button', 'u', S.unit)
+        on('.modes button', 'm', S.mode)
+        on('#fmtSeg button', 's', S.fmt)
+        on('#themeRow button', 'th', S.theme)
+      }
+
+      function bhoriOf(box) {
+        const g = f => num(box.querySelector(`[data-f=${f}]`).value)
+        return (g('ana') * 60 + g('roti') * 10 + g('point')) / PTS
+      }
+      function setFromBhori(box, bh, skip) {
+        const p = bh * PTS,
+          ana = Math.floor(p / 60 + 1e-9),
+          roti = Math.floor((p - ana * 60) / 10 + 1e-9),
+          pt = Math.round((p - ana * 60 - roti * 10) * 100) / 100
+        const set = (f, v) => {
+          if (f !== skip) box.querySelector(`[data-f=${f}]`).value = v || ''
+        }
+        set('ana', ana)
+        set('roti', roti)
+        set('point', pt)
+      }
+      function wireWeight(box) {
+        box.addEventListener('input', e => {
+          const f = e.target.dataset.f
+          if (!f) return
+          if (f === 'gram') setFromBhori(box, num(e.target.value) / BHORI_G, 'gram')
+          else box.querySelector('[data-f=gram]').value = (bhoriOf(box) * BHORI_G).toFixed(3).replace(/\.?0+$/, '') || ''
+          calc()
+        })
+        box.addEventListener('change', () => {
+          const bh = bhoriOf(box)
+          if (bh > 0) setFromBhori(box, bh)
+          calc()
+        })
+      }
+
+      function calc() {
+        S.rates[S.karat] = $('rate').value
+        S.ded = $('ded').value
+        S.mk = $('mk').value
+        S.mkType = $('mkType').value
+        S.vat = $('vat').value
+        S.other = $('other').value
+        const rate = num($('rate').value),
+          perBhori = S.unit === 'bhori' ? rate : rate * BHORI_G
+        const nBh = bhoriOf(document.querySelector('[data-w=new]')),
+          oBh = bhoriOf(document.querySelector('[data-w=old]'))
+        const nVal = nBh * perBhori,
+          mkIn = num($('mk').value),
+          mk = S.mkType === 'pct' ? (nVal * mkIn) / 100 : mkIn
+        const vat = ((nVal + mk) * num($('vat').value)) / 100,
+          other = num($('other').value),
+          nTot = nVal + mk + vat + other
+        const oVal = oBh * perBhori,
+          dp = Math.min(100, num($('ded').value)),
+          oDed = (oVal * dp) / 100,
+          oTot = oVal - oDed
+
+        $('nVal').textContent = fmt(nVal)
+        $('nMk').textContent = fmt(mk)
+        $('nVat').textContent = fmt(vat)
+        $('nTot').textContent = fmt(nTot)
+        $('oVal').textContent = fmt(oVal)
+        $('oDed').textContent = '-' + fmt(oDed)
+        $('oTot').textContent = fmt(oTot)
+
+        const useNew = S.mode !== 'old',
+          useOld = S.mode !== 'new',
+          newP = useNew ? nTot : 0,
+          oldP = useOld ? oTot : 0,
+          diff = newP - oldP,
+          recv = diff < 0
+        $('fNew').textContent = fmt(newP)
+        $('fOld').textContent = '-' + fmt(oldP)
+        $('fNewRow').classList.toggle('hide', !useNew)
+        $('fOldRow').classList.toggle('hide', !useOld)
+        $('fLabel').textContent = recv ? t('recv') : t('pay')
+        $('fAmt').textContent = fmt(Math.abs(diff))
+        $('fAmt').className = 'big' + (recv ? ' recv' : '')
+
+        const rows = []
+        if (useNew) {
+          rows.push(['h', `${t('newT')} · ${wtTxt(nBh)}`], ['r', t('goldVal'), fmt(nVal)])
+          if (mk > 0) rows.push(['r', t('mkAmt') + (S.mkType === 'pct' ? ` (${mkIn}%)` : ''), fmt(mk)])
+          if (vat > 0) rows.push(['r', `${t('vatAmt')} (${num($('vat').value)}%)`, fmt(vat)])
+          if (other > 0) rows.push(['r', t('other').replace(' (৳)', ''), fmt(other)])
+          rows.push(['b', t('newTotal'), fmt(nTot)])
+        }
+        if (useOld) {
+          rows.push(['h', `${t('oldT')} · ${wtTxt(oBh)}`], ['r', t('before'), fmt(oVal)], ['n', `${t('dedAmt')} (${dp}%)`, '-' + fmt(oDed)], ['b', t('exch'), fmt(oTot)])
+        }
+        const kl = S.karat === 'san' ? t('san') : S.karat + 'K'
+        card = { rows, label: recv ? t('recv') : t('pay'), amt: fmt(Math.abs(diff)), recv, rate: `${kl}  •  ${fmt(rate)} / ${S.unit === 'bhori' ? t('bhori').replace('প্রতি ', '').replace('Per ', '') : t('gram').replace('প্রতি ', '').replace('Per ', '')}` }
+        card.text = [`${t('title')} (${kl})`, ...rows.map(r => (r[0] === 'h' ? '— ' + r[1] : `${r[1]}: ${r[2]}`)), `${card.label}: ${card.amt}`, '', t('disc')].join('\n')
+        save()
+      }
+
+      function setMode(m) {
+        S.mode = m
+        $('panelNew').classList.toggle('hide', m === 'old')
+        $('panelOld').classList.toggle('hide', m === 'new')
+        $('oldNum').textContent = m === 'old' ? '3' : '4'
+        applyLang()
+        calc()
+      }
+
+      /* ========= SOCIAL IMAGE ========= */
+      function rr(c, x, y, w, h, r) {
+        c.beginPath()
+        c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h)
+      }
+      function fit(c, txt, maxW, size, weight) {
+        let s = size
+        do {
+          c.font = `${weight} ${s}px ${FF}`
+          s--
+        } while (c.measureText(txt).width > maxW && s > 12)
+        return s
+      }
+      function drawCard(withLogo) {
+        const W = 1080,
+          H = S.fmt === 'pt' ? 1350 : 1080,
+          P = 64,
+          A = th(),
+          cv = document.createElement('canvas')
+        cv.width = W
+        cv.height = H
+        const c = cv.getContext('2d'),
+          lg = (x0, y0, x1, y1, a, b) => {
+            const g = c.createLinearGradient(x0, y0, x1, y1)
+            g.addColorStop(0, a)
+            g.addColorStop(1, b)
+            return g
+          }
+        c.fillStyle = A.bg
+        c.fillRect(0, 0, W, H)
+        // header band
+        const HB = 250
+        c.fillStyle = lg(0, 0, W, HB, A.hd1, A.hd2)
+        c.fillRect(0, 0, W, HB)
+        let g = c.createLinearGradient(0, 0, W, 0)
+        g.addColorStop(0, '#fde7a1')
+        g.addColorStop(0.5, '#e9b949')
+        g.addColorStop(1, '#a8701a')
+        c.fillStyle = '#D4AF6A'
+        c.fillRect(0, HB, W, 6)
+        const ls = 128,
+          ly = (HB - ls) / 2
+        if (withLogo && logo.complete && logo.naturalWidth) c.drawImage(logo, P, ly, ls, ls)
+        else {
+          c.fillStyle = g
+          rr(c, P, ly, ls, ls, 30)
+          c.fill()
+          c.fillStyle = '#fff6d6'
+          c.font = `800 52px ${FF}`
+          c.textAlign = 'center'
+          c.fillText('Au', P + ls / 2, ly + ls / 2 + 19)
+          c.textAlign = 'left'
+        }
+        c.fillStyle = '#F9FAFB'
+        c.font = `800 56px ${FF}`
+        c.fillText(t('title'), P + ls + 30, ly + 62)
+        c.fillStyle = '#A1A1AA'
+        c.font = `500 28px ${FF}`
+        c.fillText(new Date().toLocaleDateString(S.lang === 'bn' ? 'bn-BD' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }), P + ls + 30, ly + 108)
+        // rate pill
+        const py = HB + 40
+        c.font = `700 31px ${FF}`
+        const pw = c.measureText(card.rate).width + 60
+        c.fillStyle = A.card
+        rr(c, P, py, pw, 64, 32)
+        c.fill()
+        c.strokeStyle = A.p1
+        c.lineWidth = 2.5
+        c.stroke()
+        c.fillStyle = A.ac
+        c.fillText(card.rate, P + 30, py + 43)
+        // rows
+        const top = py + 96,
+          fh = H === 1350 ? 230 : 190,
+          fy = H - fh - 96,
+          n = card.rows.length || 1,
+          rh = Math.min(66, (fy - 24 - top) / n),
+          fs = Math.max(20, Math.min(32, rh * 0.52))
+        card.rows.forEach((r, i) => {
+          const y = top + i * rh,
+            cy = y + rh / 2 + fs * 0.35
+          if (r[0] === 'h') {
+            c.fillStyle = A.ac
+            fit(c, r[1], W - 2 * P, fs, '800')
+            c.fillText(r[1], P, cy)
+            c.fillStyle = A.bd
+            c.fillRect(P, y + rh - 4, W - 2 * P, 3)
+            return
+          }
+          const bold = r[0] === 'b'
+          c.fillStyle = r[0] === 'n' ? A.red : bold ? A.ac : A.tx
+          c.font = `${bold ? 800 : 500} ${fs}px ${FF}`
+          c.textAlign = 'left'
+          c.fillText(r[1], P, cy)
+          c.textAlign = 'right'
+          c.font = `700 ${fs}px ${FF}`
+          c.fillText(r[2], W - P, cy)
+          c.textAlign = 'left'
+        })
+        // final box
+        c.fillStyle = lg(P, fy, W - P, fy + fh, A.p1, A.p2)
+        rr(c, P, fy, W - 2 * P, fh, 32)
+        c.fill()
+        c.fillStyle = A.on
+        c.globalAlpha = 0.85
+        c.font = `700 32px ${FF}`
+        c.fillText(card.label, P + 40, fy + 58)
+        c.globalAlpha = 1
+        const as = fit(c, card.amt, W - 2 * P - 80, H === 1350 ? 112 : 96, '800')
+        c.fillStyle = card.recv && S.theme !== 'gold' ? '#fde68a' : A.on
+        c.font = `800 ${as}px ${FF}`
+        c.fillText(card.amt, P + 40, fy + fh - 42)
+        // footer
+        c.textAlign = 'center'
+        c.fillStyle = A.mut
+        const ds = fit(c, t('disc'), W - 2 * P, 22, '500')
+        c.font = `500 ${ds}px ${FF}`
+        c.fillText(t('disc'), W / 2, H - 50)
+        c.textAlign = 'left'
+        return cv
+      }
+      function makeBlob() {
+        return new Promise(res => {
+          let cv = drawCard(true)
+          try {
+            cv.toBlob(b => res(b), 'image/png')
+          } catch (e) {
+            cv = drawCard(false)
+            cv.toBlob(b => res(b), 'image/png')
+          }
+        })
+      }
+      function toast(m) {
+        $('toast').textContent = m
+        setTimeout(() => ($('toast').textContent = ''), 2200)
+      }
+
+      function init() {
+        load()
+        applyTheme()
+        $('karat').value = S.karat
+        $('rate').value = S.rates[S.karat] || ''
+        $('ded').value = S.ded
+        $('mk').value = S.mk
+        $('mkType').value = S.mkType
+        $('vat').value = S.vat
+        $('other').value = S.other
+        document.querySelectorAll('[data-w]').forEach(wireWeight)
+        ;['rate', 'ded', 'mk', 'mkType', 'vat', 'other'].forEach(id => $(id).addEventListener('input', calc))
+        $('karat').addEventListener('change', e => {
+          S.rates[S.karat] = $('rate').value
+          S.karat = e.target.value
+          $('rate').value = S.rates[S.karat] || ''
+          calc()
+        })
+        document.querySelectorAll('#langSeg button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.lang = b.dataset.l
+              applyLang()
+              calc()
+            }),
+        )
+        document.querySelectorAll('#unitSeg button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.unit = b.dataset.u
+              applyLang()
+              calc()
+            }),
+        )
+        document.querySelectorAll('#fmtSeg button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.fmt = b.dataset.s
+              applyLang()
+              save()
+            }),
+        )
+        document.querySelectorAll('#themeRow button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.theme = b.dataset.th
+              applyTheme()
+              applyLang()
+              save()
+            }),
+        )
+        document.querySelectorAll('.modes button').forEach(b => (b.onclick = () => setMode(b.dataset.m)))
+        $('resetBtn').onclick = () => {
+          document.querySelectorAll('[data-w] input').forEach(i => (i.value = ''))
+          $('mk').value = 0
+          $('vat').value = 0
+          $('other').value = 0
+          $('ded').value = 12
+          calc()
+        }
+        $('dlBtn').onclick = async () => {
+          const b = await makeBlob(),
+            a = document.createElement('a')
+          a.href = URL.createObjectURL(b)
+          a.download = 'gold-calculation.png'
+          a.click()
+          setTimeout(() => URL.revokeObjectURL(a.href), 4000)
+        }
+        $('shareBtn').onclick = async () => {
+          try {
+            const b = await makeBlob(),
+              f = new File([b], 'gold-calculation.png', { type: 'image/png' })
+            if (navigator.canShare && navigator.canShare({ files: [f] })) {
+              await navigator.share({ files: [f] })
+              return
+            }
+          } catch (e) {
+            if (e.name === 'AbortError') return
+          }
+          try {
+            await navigator.clipboard.writeText(card.text)
+            toast(t('copied'))
+          } catch (e) {
+            prompt('Copy:', card.text)
+          }
+        }
+        setMode(S.mode)
+      }
+      ;(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(init)
+    </script>
+  </body>
+</html>

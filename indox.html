@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>সোনার ক্যালকুলেটর | Gold Calculator</title>
+    <meta name="description" content="ভরি, আনা, রতি, গ্রাম হিসাবে সোনার দাম, পুরাতন সোনা বিনিময় ও মজুরির হিসাব।" />
+    <meta name="theme-color" content="#b45309" />
+    <style>
+      :root {
+        --g: #b45309;
+        --g2: #f59e0b;
+        --bg: #f1f5f9;
+        --card: #fff;
+        --tx: #1e293b;
+        --mut: #64748b;
+        --bd: #e2e8f0;
+        --red: #be123c;
+        --grn: #047857;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f172a;
+          --card: #1e293b;
+          --tx: #f1f5f9;
+          --mut: #94a3b8;
+          --bd: #334155;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          'Noto Sans Bengali',
+          'Hind Siliguri',
+          sans-serif;
+        line-height: 1.4;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 12px;
+      }
+      header {
+        background: linear-gradient(135deg, #1c1608, #3b2a0a);
+        color: #fff;
+        border-radius: 16px;
+        padding: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 3px solid var(--g2);
+      }
+      header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+      header p {
+        margin: 2px 0 0;
+        font-size: 0.8rem;
+        color: #fcd34d;
+      }
+      .seg {
+        display: inline-flex;
+        background: var(--bd);
+        border-radius: 10px;
+        padding: 3px;
+        gap: 3px;
+      }
+      .seg button {
+        border: 0;
+        background: none;
+        color: var(--mut);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+      .seg button.on {
+        background: var(--g);
+        color: #fff;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 14px;
+        padding: 14px;
+        margin-top: 12px;
+      }
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .n {
+        background: var(--g2);
+        color: #fff;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--mut);
+        margin-bottom: 3px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 9px 10px;
+        border: 1px solid var(--bd);
+        border-radius: 9px;
+        background: var(--bg);
+        color: var(--tx);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      input:focus,
+      select:focus {
+        outline: 2px solid var(--g2);
+        border-color: transparent;
+      }
+      .row {
+        display: grid;
+        gap: 8px;
+      }
+      .c2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .c3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .c4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .mt {
+        margin-top: 10px;
+      }
+      .line {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.9rem;
+        padding: 4px 0;
+      }
+      .line.neg {
+        color: var(--red);
+      }
+      .tot {
+        background: rgba(245, 158, 11, 0.15);
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+      }
+      .hint {
+        font-size: 0.72rem;
+        color: var(--mut);
+        margin: 6px 0 0;
+      }
+      .modes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .modes button {
+        border: 2px solid var(--bd);
+        background: var(--card);
+        color: var(--tx);
+        border-radius: 12px;
+        padding: 10px 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.82rem;
+      }
+      .modes button.on {
+        border-color: var(--g2);
+        background: rgba(245, 158, 11, 0.14);
+      }
+      .final {
+        border: 2px solid var(--g2);
+      }
+      .big {
+        font-size: 1.9rem;
+        font-weight: 800;
+      }
+      .pay {
+        color: var(--red);
+      }
+      .recv {
+        color: var(--grn);
+      }
+      .btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .btns button {
+        flex: 1;
+        min-width: 110px;
+        padding: 11px;
+        border-radius: 10px;
+        border: 1px solid var(--bd);
+        background: var(--card);
+        color: var(--tx);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .btns .pri {
+        background: var(--g);
+        color: #fff;
+        border-color: var(--g);
+      }
+      .disc {
+        font-size: 0.72rem;
+        color: var(--mut);
+        text-align: center;
+        margin: 14px 0 6px;
+      }
+      .hide {
+        display: none !important;
+      }
+      @media print {
+        header .seg,
+        .btns,
+        .modes,
+        #cfg {
+          display: none !important;
+        }
+        body {
+          background: #fff;
+          color: #000;
+        }
+        .card {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1 data-i="title"></h1>
+          <p data-i="sub"></p>
+        </div>
+        <div class="seg" id="langSeg"><button data-l="bn">বাংলা</button><button data-l="en">EN</button></div>
+      </header>
+
+      <section class="card" id="cfg">
+        <h2><span class="n">1</span><span data-i="rateT"></span></h2>
+        <div class="row c3">
+          <div>
+            <label for="karat" data-i="karat"></label>
+            <select id="karat">
+              <option value="22">22K</option>
+              <option value="21">21K</option>
+              <option value="18">18K</option>
+              <option value="san" data-i="san"></option>
+            </select>
+          </div>
+          <div><label for="rate" data-i="price"></label><input id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="0" /></div>
+          <div>
+            <label data-i="unit"></label>
+            <div class="seg" id="unitSeg" style="display: flex"><button data-u="bhori" style="flex: 1" data-i="bhori"></button><button data-u="gram" style="flex: 1" data-i="gram"></button></div>
+          </div>
+        </div>
+        <p class="hint" data-i="rateHint"></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">2</span><span data-i="typeT"></span></h2>
+        <div class="modes">
+          <button data-m="new" data-i="mNew"></button>
+          <button data-m="old" data-i="mOld"></button>
+          <button data-m="both" data-i="mBoth"></button>
+        </div>
+      </section>
+
+      <section class="card" id="panelNew">
+        <h2><span class="n">3</span><span data-i="newT"></span></h2>
+        <div class="row c4" data-w="new">
+          <div><label data-i="ana"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="ana" /></div>
+          <div><label data-i="roti"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="roti" /></div>
+          <div><label data-i="point"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="point" /></div>
+          <div><label data-i="gramL"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="gram" /></div>
+        </div>
+        <p class="hint" data-i="conv"></p>
+        <div class="line mt"><span data-i="goldVal"></span><b id="nVal"></b></div>
+        <div class="row c3 mt">
+          <div><label data-i="mk"></label><input id="mk" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+          <div>
+            <label data-i="mkType"></label
+            ><select id="mkType">
+              <option value="pct">%</option>
+              <option value="fix">৳</option>
+            </select>
+          </div>
+          <div><label data-i="vat"></label><input id="vat" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+        </div>
+        <div class="mt"><label data-i="other"></label><input id="other" type="number" inputmode="decimal" min="0" step="any" value="0" /></div>
+        <div class="line mt"><span data-i="mkAmt"></span><b id="nMk"></b></div>
+        <div class="line"><span data-i="vatAmt"></span><b id="nVat"></b></div>
+        <div class="tot"><span data-i="newTotal"></span><span id="nTot"></span></div>
+      </section>
+
+      <section class="card" id="panelOld">
+        <h2><span class="n" id="oldNum">4</span><span data-i="oldT"></span></h2>
+        <div class="row c4" data-w="old">
+          <div><label data-i="ana"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="ana" /></div>
+          <div><label data-i="roti"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="roti" /></div>
+          <div><label data-i="point"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="point" /></div>
+          <div><label data-i="gramL"></label><input type="number" inputmode="decimal" min="0" step="any" data-f="gram" /></div>
+        </div>
+        <div class="mt"><label data-i="ded"></label><input id="ded" type="number" inputmode="decimal" min="0" max="100" step="any" value="12" /></div>
+        <div class="line mt"><span data-i="before"></span><b id="oVal"></b></div>
+        <div class="line neg"><span data-i="dedAmt"></span><b id="oDed"></b></div>
+        <div class="tot"><span data-i="exch"></span><span id="oTot"></span></div>
+      </section>
+
+      <section class="card final">
+        <h2 data-i="finalT"></h2>
+        <div class="line" id="fNewRow"><span data-i="newTotal"></span><b id="fNew"></b></div>
+        <div class="line neg" id="fOldRow"><span data-i="minusOld"></span><b id="fOld"></b></div>
+        <div class="tot" style="margin-top: 10px"><span id="fLabel"></span><span class="big" id="fAmt"></span></div>
+        <div class="hint" id="fWt" style="margin-top: 8px"></div>
+      </section>
+
+      <div class="btns">
+        <button class="pri" id="shareBtn" data-i="share"></button>
+        <button id="printBtn" data-i="print"></button>
+        <button id="resetBtn" data-i="reset"></button>
+      </div>
+      <p class="disc" data-i="disc"></p>
+      <p class="disc" id="toast" style="color: var(--grn); min-height: 1em"></p>
+    </div>
+
+    <script>
+      const BHORI_G = 11.664,
+        PTS = 960
+      const T = {
+        bn: {
+          title: 'সোনার ক্যালকুলেটর',
+          sub: 'সোনার দাম, ওজন ও বিনিময় হিসাব',
+          rateT: 'আজকের সোনার দাম',
+          karat: 'ক্যারেট',
+          san: 'সনাতন',
+          price: 'দাম (৳)',
+          unit: 'একক',
+          bhori: 'প্রতি ভরি',
+          gram: 'প্রতি গ্রাম',
+          rateHint: 'প্রতিটি ক্যারেটের দাম আলাদা সংরক্ষিত থাকে।',
+          typeT: 'হিসাবের ধরন',
+          mNew: 'নতুন সোনা ক্রয়',
+          mOld: 'পুরাতন সোনা বিক্রি/বিনিময়',
+          mBoth: 'পুরাতন দিয়ে নতুন ক্রয়',
+          newT: 'নতুন সোনা',
+          oldT: 'পুরাতন সোনা',
+          ana: 'আনা',
+          roti: 'রতি',
+          point: 'পয়েন্ট',
+          gramL: 'গ্রাম',
+          conv: '১ ভরি = ১৬ আনা = ৯৬ রতি = ৯৬০ পয়েন্ট = ১১.৬৬৪ গ্রাম',
+          goldVal: 'সোনার দাম',
+          mk: 'মজুরি',
+          mkType: 'মজুরির ধরন',
+          vat: 'ভ্যাট %',
+          other: 'অন্যান্য খরচ (৳)',
+          mkAmt: 'মজুরি',
+          vatAmt: 'ভ্যাট',
+          newTotal: 'নতুন সোনার মোট দাম',
+          ded: 'কর্তন % (ভ্যাটসহ)',
+          before: 'কর্তনের আগে দাম',
+          dedAmt: 'কর্তন',
+          exch: 'বিনিময় মূল্য',
+          finalT: 'চূড়ান্ত হিসাব',
+          minusOld: 'বাদ: পুরাতন সোনার মূল্য',
+          pay: 'আপনাকে দিতে হবে',
+          recv: 'আপনি পাবেন',
+          share: 'শেয়ার / কপি',
+          print: 'প্রিন্ট',
+          reset: 'রিসেট',
+          copied: 'কপি হয়েছে ✓',
+          disc: 'এটি আনুমানিক হিসাব। চূড়ান্ত দাম আপনার জুয়েলারির রেট ও চার্জের উপর নির্ভর করে।',
+          nw: 'নতুন',
+          od: 'পুরাতন',
+          wt: 'ওজন',
+          bh: 'ভরি',
+          gr: 'গ্রাম',
+        },
+        en: {
+          title: 'Gold Calculator',
+          sub: 'Gold price, weight & exchange',
+          rateT: "Today's Gold Price",
+          karat: 'Karat',
+          san: 'Traditional',
+          price: 'Price (৳)',
+          unit: 'Unit',
+          bhori: 'Per Bhori',
+          gram: 'Per Gram',
+          rateHint: 'Each karat keeps its own saved rate.',
+          typeT: 'Calculation Type',
+          mNew: 'New Gold Purchase',
+          mOld: 'Sell / Exchange Old Gold',
+          mBoth: 'Exchange + New Purchase',
+          newT: 'New Gold',
+          oldT: 'Old Gold',
+          ana: 'Ana',
+          roti: 'Roti',
+          point: 'Point',
+          gramL: 'Gram',
+          conv: '1 Bhori = 16 Ana = 96 Roti = 960 Point = 11.664 g',
+          goldVal: 'Gold Value',
+          mk: 'Making Charge',
+          mkType: 'Charge Type',
+          vat: 'VAT %',
+          other: 'Other Charge (৳)',
+          mkAmt: 'Making Charge',
+          vatAmt: 'VAT',
+          newTotal: 'Total New Gold Price',
+          ded: 'Deduction % (incl. VAT)',
+          before: 'Value before deduction',
+          dedAmt: 'Deduction',
+          exch: 'Exchange Value',
+          finalT: 'Final Calculation',
+          minusOld: 'Minus: Old Gold Value',
+          pay: 'Amount to Pay',
+          recv: 'You Will Receive',
+          share: 'Share / Copy',
+          print: 'Print',
+          reset: 'Reset',
+          copied: 'Copied ✓',
+          disc: "Estimates only. Final price depends on your jeweller's rate and charges.",
+          nw: 'New',
+          od: 'Old',
+          wt: 'Weight',
+          bh: 'Bhori',
+          gr: 'g',
+        },
+      }
+      const $ = id => document.getElementById(id)
+      const S = { lang: 'bn', unit: 'bhori', mode: 'new', karat: '22', rates: {}, ded: 12, mk: 0, mkType: 'pct', vat: 0, other: 0 }
+      let last = ''
+
+      function load() {
+        try {
+          Object.assign(S, JSON.parse(localStorage.getItem('goldCalcV2') || '{}'))
+        } catch (e) {}
+      }
+      function save() {
+        try {
+          localStorage.setItem('goldCalcV2', JSON.stringify(S))
+        } catch (e) {}
+      }
+
+      const num = v => Math.max(0, parseFloat(v) || 0)
+      const fmt = v => '৳' + (+v || 0).toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      const t = k => T[S.lang][k]
+
+      function applyLang() {
+        document.documentElement.lang = S.lang
+        document.querySelectorAll('[data-i]').forEach(e => (e.textContent = t(e.dataset.i)))
+        document.querySelectorAll('#langSeg button').forEach(b => b.classList.toggle('on', b.dataset.l === S.lang))
+        document.querySelectorAll('#unitSeg button').forEach(b => b.classList.toggle('on', b.dataset.u === S.unit))
+        document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.m === S.mode))
+      }
+
+      // weight blocks
+      function bhoriOf(box) {
+        const g = f => num(box.querySelector(`[data-f=${f}]`).value)
+        return (g('ana') * 60 + g('roti') * 10 + g('point')) / PTS
+      }
+      function setFromBhori(box, bh, skip) {
+        const p = bh * PTS,
+          ana = Math.floor(p / 60 + 1e-9),
+          roti = Math.floor((p - ana * 60) / 10 + 1e-9),
+          pt = Math.round((p - ana * 60 - roti * 10) * 100) / 100
+        const set = (f, v) => {
+          if (f !== skip) box.querySelector(`[data-f=${f}]`).value = v || ''
+        }
+        set('ana', ana)
+        set('roti', roti)
+        set('point', pt)
+      }
+      function wireWeight(box) {
+        box.addEventListener('input', e => {
+          const f = e.target.dataset.f
+          if (!f) return
+          if (f === 'gram') {
+            setFromBhori(box, num(e.target.value) / BHORI_G, 'gram')
+          } else {
+            box.querySelector('[data-f=gram]').value = (bhoriOf(box) * BHORI_G).toFixed(3).replace(/\.?0+$/, '') || ''
+          }
+          calc()
+        })
+        box.addEventListener('change', () => {
+          // normalize carry on blur
+          const bh = bhoriOf(box)
+          if (bh > 0) {
+            setFromBhori(box, bh)
+          }
+          calc()
+        })
+      }
+
+      function calc() {
+        S.rates[S.karat] = $('rate').value
+        S.ded = $('ded').value
+        S.mk = $('mk').value
+        S.mkType = $('mkType').value
+        S.vat = $('vat').value
+        S.other = $('other').value
+        const rate = num($('rate').value),
+          perBhori = S.unit === 'bhori' ? rate : rate * BHORI_G
+
+        const nBh = bhoriOf(document.querySelector('[data-w=new]')),
+          oBh = bhoriOf(document.querySelector('[data-w=old]'))
+        const nVal = nBh * perBhori,
+          mkIn = num($('mk').value)
+        const mk = $('mkType').value === 'pct' ? (nVal * mkIn) / 100 : mkIn
+        const vat = ((nVal + mk) * num($('vat').value)) / 100
+        const nTot = nVal + mk + vat + num($('other').value)
+
+        const oVal = oBh * perBhori,
+          dedPct = Math.min(100, num($('ded').value)),
+          oDed = (oVal * dedPct) / 100,
+          oTot = oVal - oDed
+
+        $('nVal').textContent = fmt(nVal)
+        $('nMk').textContent = fmt(mk)
+        $('nVat').textContent = fmt(vat)
+        $('nTot').textContent = fmt(nTot)
+        $('oVal').textContent = fmt(oVal)
+        $('oDed').textContent = '-' + fmt(oDed)
+        $('oTot').textContent = fmt(oTot)
+
+        const useNew = S.mode !== 'old',
+          useOld = S.mode !== 'new'
+        const newP = useNew ? nTot : 0,
+          oldP = useOld ? oTot : 0,
+          diff = newP - oldP
+        $('fNew').textContent = fmt(newP)
+        $('fOld').textContent = '-' + fmt(oldP)
+        $('fNewRow').classList.toggle('hide', !useNew)
+        $('fOldRow').classList.toggle('hide', !useOld)
+        const receive = diff < 0
+        $('fLabel').textContent = receive ? t('recv') : t('pay')
+        $('fAmt').textContent = fmt(Math.abs(diff))
+        $('fAmt').className = 'big ' + (receive ? 'recv' : 'pay')
+        $('fWt').textContent = (useNew ? `${t('nw')}: ${nBh.toFixed(4)} ${t('bh')} (${(nBh * BHORI_G).toFixed(3)} ${t('gr')})  ` : '') + (useOld ? `${t('od')}: ${oBh.toFixed(4)} ${t('bh')} (${(oBh * BHORI_G).toFixed(3)} ${t('gr')})` : '')
+
+        const kl = S.karat === 'san' ? t('san') : S.karat + 'K'
+        last = [
+          `${t('title')} (${kl})`,
+          `${t('price')}: ${fmt(rate)} / ${S.unit === 'bhori' ? t('bhori') : t('gram')}`,
+          useNew ? `${t('newT')}: ${nBh.toFixed(4)} ${t('bh')} → ${fmt(nTot)}` : '',
+          useOld ? `${t('oldT')}: ${oBh.toFixed(4)} ${t('bh')} → ${fmt(oTot)}` : '',
+          `${receive ? t('recv') : t('pay')}: ${fmt(Math.abs(diff))}`,
+          '',
+          t('disc'),
+        ]
+          .filter(x => x !== '' || 1)
+          .join('\n')
+        save()
+      }
+
+      function setMode(m) {
+        S.mode = m
+        $('panelNew').classList.toggle('hide', m === 'old')
+        $('panelOld').classList.toggle('hide', m === 'new')
+        $('oldNum').textContent = m === 'old' ? '3' : '4'
+        applyLang()
+        calc()
+      }
+
+      function init() {
+        load()
+        $('karat').value = S.karat
+        $('rate').value = S.rates[S.karat] || ''
+        $('ded').value = S.ded
+        $('mk').value = S.mk
+        $('mkType').value = S.mkType
+        $('vat').value = S.vat
+        $('other').value = S.other
+        document.querySelectorAll('[data-w]').forEach(wireWeight)
+        ;['rate', 'ded', 'mk', 'mkType', 'vat', 'other'].forEach(id => $(id).addEventListener('input', calc))
+        $('karat').addEventListener('change', e => {
+          S.rates[S.karat] = $('rate').value
+          S.karat = e.target.value
+          $('rate').value = S.rates[S.karat] || ''
+          calc()
+        })
+        document.querySelectorAll('#langSeg button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.lang = b.dataset.l
+              applyLang()
+              calc()
+            }),
+        )
+        document.querySelectorAll('#unitSeg button').forEach(
+          b =>
+            (b.onclick = () => {
+              S.unit = b.dataset.u
+              applyLang()
+              calc()
+            }),
+        )
+        document.querySelectorAll('.modes button').forEach(b => (b.onclick = () => setMode(b.dataset.m)))
+        $('printBtn').onclick = () => window.print()
+        $('resetBtn').onclick = () => {
+          document.querySelectorAll('[data-w] input').forEach(i => (i.value = ''))
+          $('mk').value = 0
+          $('vat').value = 0
+          $('other').value = 0
+          $('ded').value = 12
+          calc()
+        }
+        $('shareBtn').onclick = async () => {
+          try {
+            if (navigator.share) {
+              await navigator.share({ text: last })
+              return
+            }
+          } catch (e) {}
+          try {
+            await navigator.clipboard.writeText(last)
+            $('toast').textContent = t('copied')
+            setTimeout(() => ($('toast').textContent = ''), 2000)
+          } catch (e) {
+            prompt('Copy:', last)
+          }
+        }
+        setMode(S.mode)
+      }
+      init()
+    </script>
+  </body>
+</html>

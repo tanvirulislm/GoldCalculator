@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ittadi Voice Order Matcher</title>
+<style>
+:root{--bg:#f5f6f8;--panel:#fff;--ink:#17202a;--muted:#697586;--line:#e2e6ec;--accent:#176b57;--accent2:#e6f4ef;--warn:#946200;--warnbg:#fff5d8;--danger:#a83232;--dangerbg:#fff0f0;--shadow:0 8px 28px rgba(20,30,45,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line)}.head{max-width:1120px;margin:auto;padding:22px 20px;display:flex;gap:14px;align-items:center}.logo{width:46px;height:46px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px}.head h1{font-size:20px;margin:0}.head p{margin:3px 0 0;color:var(--muted);font-size:13px}
+main{max-width:1120px;margin:24px auto;padding:0 20px 40px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr);gap:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}.card h2{font-size:17px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px;margin:0 0 16px}.label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}.textarea{width:100%;min-height:150px;resize:vertical;border:1px solid #ccd3dc;border-radius:12px;padding:13px;font:15px/1.7 inherit;outline:none;background:#fff}.textarea:focus,input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #176b5718;outline:none}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:#fff;color:var(--ink);font-weight:700;cursor:pointer;font-size:13px}.btn:hover{background:#f7f8fa}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.primary:hover{background:#105443}.btn:disabled{opacity:.45;cursor:not-allowed}.status{font-size:12px;color:var(--muted);margin-top:10px}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:5px 9px;font-size:12px;font-weight:700;background:#edf0f4;color:#465160}.chip.green{background:var(--accent2);color:var(--accent)}.chip.yellow{background:var(--warnbg);color:var(--warn)}.chip.red{background:var(--dangerbg);color:var(--danger)}.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:14px}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f8f9fb;color:#586272;font-size:12px;white-space:nowrap}tr:last-child td{border-bottom:0}.productname{font-weight:650}.small{font-size:12px;color:var(--muted)}.qty{width:74px;padding:8px;border:1px solid #ccd3dc;border-radius:8px;font:inherit}.select{width:100%;padding:8px;border:1px solid #ccd3dc;border-radius:8px;background:#fff;font:inherit;max-width:330px}.rowactions{display:flex;gap:6px;align-items:center}.iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;cursor:pointer}.empty{padding:28px 12px;text-align:center;color:var(--muted)}.drop{border:1px dashed #b9c4d0;border-radius:12px;padding:14px;background:#fafbfd}.drop input{width:100%;font-size:13px}.statrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.footerhint{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}.sectionline{height:1px;background:var(--line);margin:18px 0}.rightcol{display:flex;flex-direction:column;gap:18px}.hidden{display:none!important}.candidate{display:block;margin-top:6px}.copyarea{width:100%;height:90px;border:1px solid var(--line);border-radius:10px;padding:10px;font:13px/1.5 ui-monospace,monospace;background:#fafbfd}.error{color:var(--danger);font-size:12px;margin-top:6px}@media(max-width:850px){main{grid-template-columns:1fr}.head{padding:17px 16px}main{padding:0 12px 28px;margin-top:14px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="logo">IT</div><div><h1>Ittadi Voice Order Matcher</h1><p>কথা বলুন → পণ্য মিলান → Product Name + Qty কপি করুন</p></div><div style="margin-left:auto"><span id="catalogCount" class="chip green">20 products</span></div></div></header>
+<main>
+<section class="card">
+  <h2>১. অর্ডার লিখুন বা বলুন</h2>
+  <p class="sub">প্রতি পণ্যের নাম ও পরিমাণ বলুন। একাধিক আইটেম হলে কমা, বিরতি বা নতুন লাইনে বললে সবচেয়ে ভালো ফল পাবেন।</p>
+  <label class="label" for="orderText">Customer order</label>
+  <textarea id="orderText" class="textarea" placeholder="যেমন: তথ্য নোট একাদশ ২৮ পাঞ্জেরী ১০টা&#10;ইংরেজি নোট একাদশ ২৮ লেকচার ৫টা"></textarea>
+  <div class="toolbar">
+    <button class="btn primary" id="matchBtn">পণ্য মিলাও</button>
+    <button class="btn" id="micBtn">🎙️ ভয়েস ইনপুট</button>
+    <button class="btn" id="clearBtn">মুছে ফেলুন</button>
+  </div>
+  <div id="voiceStatus" class="status">ভয়েসের জন্য Chrome-এ microphone permission লাগতে পারে।</div>
+  <div class="sectionline"></div>
+  <h2>২. পণ্যের তালিকা</h2>
+  <p class="sub">আপনার ২০টি পণ্যের তালিকা আগে থেকেই যুক্ত আছে। পূর্ণ তালিকা দিতে CSV বা Excel export আপলোড করুন।</p>
+  <div class="drop">
+    <label class="label" for="fileInput" style="margin-top:0">নতুন catalogue আপলোড (.csv, .xls, .xlsx)</label>
+    <input type="file" id="fileInput" accept=".csv,.xls,.xlsx,.html,.htm">
+    <div id="fileStatus" class="status">বর্তমানে যুক্ত: আপলোড করা ২০টি পণ্য।</div>
+  </div>
+  <p class="footerhint">নোট: আপনার .xls export যদি ERP-এর HTML-based Excel ফাইল হয়, অ্যাপ সেটি পড়তে পারবে। সাধারণ .xlsx পড়তে ইন্টারনেট লাগতে পারে।</p>
+</section>
+<div class="rightcol">
+<section class="card">
+  <div class="topline"><div><h2>৩. মিলানো পণ্য</h2><p class="sub" style="margin-bottom:0">ভুল ম্যাচ হলে ড্রপডাউন থেকে সঠিক পণ্য বেছে নিন।</p></div><span id="resultCount" class="chip">0 items</span></div>
+  <div id="results" class="empty">এখনও কোনো অর্ডার মিলানো হয়নি।</div>
+  <div id="resultActions" class="toolbar hidden">
+    <button class="btn primary" id="copyBtn">কপি করুন</button>
+    <button class="btn" id="downloadBtn">Excel-ready CSV</button>
+    <button class="btn" id="resetResultsBtn">ফলাফল মুছুন</button>
+  </div>
+  <p class="footerhint">শুধু নিশ্চিত হওয়া পণ্য কপি করুন। অ্যাপ নিজে থেকে ERP-তে কোনো অর্ডার জমা দেয় না।</p>
+</section>
+<section class="card">
+  <h2>কপি করার আউটপুট</h2>
+  <p class="sub">ERP-তে Product Name ও Qty কলামে পেস্ট করার জন্য tab-separated output।</p>
+  <textarea id="outputText" class="copyarea" readonly placeholder="মিলানো পণ্য এখানে দেখা যাবে..."></textarea>
+  <div class="toolbar"><button class="btn" id="copyOutputBtn">আউটপুট কপি</button></div>
+  <div id="copyStatus" class="status"></div>
+</section>
+</div>
+</main>
+<script>
+const INITIAL_PRODUCTS = [{"id": "1848", "name": "গাইড - ২য় শ্রেণি - স্কয়ার", "category": "২য় শ্রেণি", "stock": "4", "unit": "PCS", "rate": "275.00"}, {"id": "1847", "name": "জীববিজ্ঞান ২য় পত্র নোট - একাদশ ২৮ - লেকচার", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1846", "name": "ইংরেজী নোট - একাদশ ২৮ - লেকচার", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1845", "name": "রসায়ন ২য় পত্র নোট - একাদশ ২৮ - লেকচার", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1844", "name": "পদার্থ ২য় পত্র নোট - একাদশ ২৮ - লেকচার", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1843", "name": "উচ্চতর সমাধান ২য় পত্র নোট - একাদশ ২৮ - সিসটেক", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1842", "name": "ইংরেজী ১ম পত্র গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1841", "name": "তথ্য ও যোগাযোগ প্রযুক্তি নোট - একাদশ ২৮ - পাঞ্জেরী", "category": "একাদশ ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1840", "name": "তথ্য ও যোগাযোগ প্রযুক্তি গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1839", "name": "বাংলা ১ম পত্র গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1838", "name": "পৌরনীতি ২য় পত্র গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1837", "name": "পৌরনীতি ১ম পত্র গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1836", "name": "ইসলামের ইতিহাস গাইড - আলিম - ২৮ - আল ফাতাহ", "category": "আলিম - ২৮", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1835", "name": "উচ্চতর গণিত ১ম পত্র নোট - একাদশ - ২০২৭ - পাঞ্জেরী", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1834", "name": "ইতিহাস ২য় পত্র নোট - একাদশ - ২০২৭ - পাঞ্জেরী", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1833", "name": "ইতিহাস ১ম পত্র নোট - একাদশ - ২০২৭ - পাঞ্জেরী", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1832", "name": "রসায়ন ২য় পত্র নোট - একাদশ - ২০২৭ - পাঞ্জেরী", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1831", "name": "সমাজবিজ্ঞান ২য় পত্র নোট - একাদশ - ২০২৭ - লেকচার", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1830", "name": "সংগঠন ২য় পত্র নোট - একাদশ - ২০২৭ - লেকচার", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}, {"id": "1829", "name": "সংগঠন ১ম পত্র নোট - একাদশ - ২০২৭ - লেকচার", "category": "একাদশ - ২০২৭", "stock": "0", "unit": "PCS", "rate": "0.00"}];
+let products = INITIAL_PRODUCTS.map(p=>({...p}));
+let results = [];
+let recognition = null;
+let recognitionBase = '';
+const $ = id => document.getElementById(id);
+
+function normalize(s){
+  return String(s||'').toLowerCase()
+    .replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d))
+    .replace(/[০-৯]/g, d => String('০১২৩৪৫৬৭৮৯'.indexOf(d)))
+    .replace(/[.,،;:()[\]{}\-_/\\|]+/g,' ')
+    .replace(/পাঞ্জেরী/g,'পাঞ্জেরী').replace(/পাঞ্জেরি/g,'পাঞ্জেরী')
+    .replace(/কপি|টা|টি|খানা|পিস|পিস্|pcs|piece|pieces/gi,' ')
+    .replace(/\s+/g,' ').trim();
+}
+function tokens(s){return normalize(s).split(' ').filter(t=>t.length>0)}
+function levenshtein(a,b){
+  const dp=Array.from({length:b.length+1},(_,i)=>[i]);
+  for(let j=1;j<=a.length;j++)dp[0][j]=j;
+  for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)
+    dp[i][j]=b[i-1]===a[j-1]?dp[i-1][j-1]:Math.min(dp[i-1][j-1]+1,dp[i][j-1]+1,dp[i-1][j]+1);
+  return dp[b.length][a.length];
+}
+function scoreMatch(query,p){
+  const q=tokens(query), n=tokens(p.name+' '+(p.category||''));
+  if(!q.length||!n.length)return 0;
+  const qset=[...new Set(q)], nset=new Set(n);
+  let overlap=qset.filter(t=>nset.has(t)).length/Math.max(qset.length,1);
+  let coverage=qset.filter(t=>n.some(x=>x.includes(t)||t.includes(x))).length/Math.max(qset.length,1);
+  const nq=normalize(query), nn=normalize(p.name);
+  let contain=(nn.includes(nq)||nq.includes(nn))?0.35:0;
+  let typo=0;
+  if(qset.length<=3){
+    const close=qset.filter(t=>n.some(x=>Math.min(t.length,x.length)>=4 && levenshtein(t,x)<=1)).length/Math.max(qset.length,1);
+    typo=close*.35;
+  }
+  return Math.min(1, overlap*.65+coverage*.25+contain+typo);
+}
+function findQty(text){
+  const s=String(text||'').replace(/[০-৯]/g,d=>String('০১২৩৪৫৬৭৮৯'.indexOf(d)));
+  const re=/(?:^|\s)(\d+)\s*(?:টা|টি|কপি|খানা|পিস|pcs|piece|pieces)?\s*$/i;
+  const m=s.match(re);
+  if(!m)return null;
+  const qty=Number(m[1]);
+  if(!Number.isFinite(qty)||qty<=0)return null;
+  return {qty, query:s.slice(0,m.index).trim()};
+}
+function splitOrder(text){
+  let s=String(text||'').replace(/\r/g,'\n').trim();
+  if(!s)return [];
+  let pieces=s.split(/\n|[,،;]+|(?:\s+তারপর\s+)/i).map(x=>x.trim()).filter(Boolean);
+  // If one utterance has multiple quantities separated by "আর", split only when each side has a quantity.
+  const expanded=[];
+  for(const part of pieces){
+    if(/\s+আর\s+/i.test(part)){
+      const sides=part.split(/\s+আর\s+/i);
+      if(sides.length>1 && sides.every(x=>findQty(x))){expanded.push(...sides);continue;}
+    }
+    expanded.push(part);
+  }
+  return expanded.map(part=>({raw:part,...(findQty(part)||{qty:null,query:part})}));
+}
+function candidatesFor(query){
+  return products.map(p=>({...p,score:scoreMatch(query,p)})).sort((a,b)=>b.score-a.score).slice(0,5);
+}
+function processOrder(){
+  const parsed=splitOrder($('orderText').value);
+  if(!parsed.length){$('voiceStatus').textContent='আগে অর্ডার লিখুন বা বলুন।';return}
+  results=parsed.map((item,i)=>{
+    const cand=candidatesFor(item.query);
+    const top=cand[0];
+    const second=cand[1];
+    const confident=top && top.score>=0.55 && (!second || top.score-second.score>=0.08);
+    return {key:Date.now()+i,raw:item.raw,query:item.query,qty:item.qty||1,qtyMissing:item.qty==null,product:confident?top:null,candidates:cand,status:confident?'matched':'review'};
+  });
+  renderResults();
+}
+function renderResults(){
+  $('resultCount').textContent=results.length+' items';
+  $('resultActions').classList.toggle('hidden',results.length===0);
+  $('outputText').value='';
+  if(!results.length){$('results').className='empty';$('results').textContent='এখনও কোনো অর্ডার মিলানো হয়নি।';return}
+  $('results').className='';
+  const table=document.createElement('div');table.className='tablewrap';
+  const t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>আপনার বলা নাম</th><th>সঠিক পণ্য</th><th>Qty</th><th>স্ট্যাটাস</th><th></th></tr></thead>';
+  const body=document.createElement('tbody');
+  results.forEach((r,idx)=>{
+    const tr=document.createElement('tr');
+    const tdRaw=document.createElement('td');tdRaw.innerHTML='<div class="productname"></div><div class="small"></div>';tdRaw.querySelector('.productname').textContent=r.query;tdRaw.querySelector('.small').textContent=r.raw;
+    const tdProduct=document.createElement('td');
+    const select=document.createElement('select');select.className='select';
+    const blank=document.createElement('option');blank.value='';blank.textContent='— পণ্য নিশ্চিত করুন —';select.appendChild(blank);
+    const options=[...r.candidates];
+    if(r.product&&!options.some(p=>p.id===r.product.id))options.unshift(r.product);
+    options.forEach(p=>{const op=document.createElement('option');op.value=p.id;op.textContent=p.name+' (ID '+p.id+')';if(r.product&&String(r.product.id)===String(p.id))op.selected=true;select.appendChild(op)});
+    select.addEventListener('change',()=>{const p=products.find(p=>String(p.id)===select.value);r.product=p||null;r.status=p?'matched':'review';renderResults()});
+    tdProduct.appendChild(select);
+    const tdQty=document.createElement('td');const q=document.createElement('input');q.type='number';q.min='1';q.step='1';q.className='qty';q.value=r.qtyMissing?'':r.qty;q.placeholder='Qty';q.addEventListener('change',()=>{r.qty=Number(q.value);r.qtyMissing=!(r.qty>0);updateOutput()});tdQty.appendChild(q);
+    const tdStatus=document.createElement('td');const chip=document.createElement('span');chip.className='chip '+(r.product&&!r.qtyMissing?'green':'yellow');chip.textContent=r.product&&!r.qtyMissing?'Matched':'Review';tdStatus.appendChild(chip);
+    const tdRemove=document.createElement('td');const del=document.createElement('button');del.className='iconbtn';del.textContent='×';del.title='Remove item';del.onclick=()=>{results=results.filter(x=>x.key!==r.key);renderResults()};tdRemove.appendChild(del);
+    tr.append(tdRaw,tdProduct,tdQty,tdStatus,tdRemove);body.appendChild(tr);
+  });
+  t.appendChild(body);table.appendChild(t);$('results').replaceChildren(table);updateOutput();
+}
+function updateOutput(){
+  const valid=results.filter(r=>r.product&&!r.qtyMissing&&Number(r.qty)>0);
+  const lines=valid.map(r=>[r.product.name,String(r.qty)]);
+  $('outputText').value=lines.map(row=>row.join('\t')).join('\n');
+  $('resultCount').textContent=results.length+' items · '+valid.length+' ready';
+}
+function copyText(text){
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>{$('copyStatus').textContent='কপি হয়েছে। ERP-তে পেস্ট করুন।'}).catch(()=>fallbackCopy(text))}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();
+  try{document.execCommand('copy');$('copyStatus').textContent='কপি হয়েছে। ERP-তে পেস্ট করুন।'}catch(e){$('copyStatus').textContent='কপি করা যায়নি—নিচের আউটপুট সিলেক্ট করে Ctrl+C চাপুন।'}
+  area.remove();
+}
+$('matchBtn').addEventListener('click',processOrder);
+$('clearBtn').addEventListener('click',()=>{$('orderText').value='';$('voiceStatus').textContent='অর্ডার মুছে ফেলা হয়েছে।'});
+$('resetResultsBtn').addEventListener('click',()=>{results=[];renderResults();$('copyStatus').textContent='';});
+$('copyBtn').addEventListener('click',()=>{const valid=results.filter(r=>r.product&&!r.qtyMissing&&Number(r.qty)>0);if(!valid.length){$('copyStatus').textContent='কপি করার মতো নিশ্চিত পণ্য নেই।';return}copyText(valid.map(r=>r.product.name+'\t'+r.qty).join('\n'))});
+$('copyOutputBtn').addEventListener('click',()=>{if(!$('outputText').value){$('copyStatus').textContent='আগে পণ্য মিলান।';return}copyText($('outputText').value)});
+$('downloadBtn').addEventListener('click',()=>{
+ const valid=results.filter(r=>r.product&&!r.qtyMissing&&Number(r.qty)>0);
+ const csv=[['Product Name','Qty'],...valid.map(r=>[r.product.name,r.qty])].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ittadi-order.xlsx-ready.csv';a.click();URL.revokeObjectURL(a.href);
+});
+function bengaliToLatin(s){return String(s).replace(/[০-৯]/g,d=>String('০১২৩৪৫৬৭৮৯'.indexOf(d)))}
+$('micBtn').addEventListener('click',()=>{
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){$('voiceStatus').textContent='এই ব্রাউজারে ভয়েস ইনপুট পাওয়া যাচ্ছে না। Chrome-এর আপডেটেড ভার্সন ব্যবহার করুন অথবা টাইপ করুন।';return}
+ if(recognition){try{recognition.stop()}catch(e){} recognition=null;$('micBtn').textContent='🎙️ ভয়েস ইনপুট';return}
+ recognition=new SR();recognition.lang='bn-BD';recognition.interimResults=true;recognition.continuous=true;
+ $('micBtn').textContent='⏹️ ভয়েস বন্ধ করুন';$('voiceStatus').textContent='শুনছি… বাংলায় পরিষ্কার করে বলুন।';
+ recognition.onresult=(event)=>{let finalText='',interim='';for(let i=0;i<event.results.length;i++){const item=event.results[i];if(item.isFinal)finalText+=item[0].transcript+' ';else interim+=item[0].transcript}
+ $('orderText').value=(recognitionBase?recognitionBase+'\n':'')+(finalText||'')+(interim?' '+interim:'');
+ if(finalText){$('voiceStatus').textContent='কথা শনাক্ত হয়েছে। প্রয়োজন হলে ঠিক করে “পণ্য মিলাও” চাপুন।'}
+ };
+ recognition.onerror=(e)=>{$('voiceStatus').textContent='ভয়েস সমস্যা: '+e.error+'. Microphone permission এবং internet connection পরীক্ষা করুন।';};
+ recognition.onend=()=>{$('micBtn').textContent='🎙️ ভয়েস ইনপুট';recognition=null;recognitionBase='';};
+ try{recognition.start()}catch(e){$('voiceStatus').textContent='মাইক্রোফোন চালু করা যায়নি।';}
+});
+function cleanCell(v){return String(v??'').trim()}
+function guessCol(headers,terms){
+ const norm=headers.map(h=>normalize(h).replace(/\s/g,''));
+ return norm.findIndex(h=>terms.some(t=>h===normalize(t).replace(/\s/g,'')))>=0?norm.findIndex(h=>terms.some(t=>h===normalize(t).replace(/\s/g,''))):-1;
+}
+function importRows(rows){
+ if(!rows||rows.length<2){$('fileStatus').textContent='ফাইলে পর্যাপ্ত সারি পাওয়া যায়নি।';return}
+ const headers=rows[0].map(cleanCell);
+ let ni=guessCol(headers,['Name','Product Name','Item Name','পণ্যের নাম','নাম']);
+ let ii=guessCol(headers,['ID','Product ID','Code','SKU','পণ্য আইডি']);
+ let ci=guessCol(headers,['Category','ক্যাটাগরি']);
+ let qi=guessCol(headers,['Qty','Stock','Quantity','পরিমাণ']);
+ let ui=guessCol(headers,['Unit','ইউনিট']);
+ let ri=guessCol(headers,['Rate','Price','Selling Price','দর','মূল্য']);
+ if(ni<0){$('fileStatus').textContent='পণ্যের নামের কলাম পাওয়া যায়নি। প্রথম সারিতে Name বা Product Name রাখুন।';return}
+ const out=[];
+ rows.slice(1).forEach((row,i)=>{const name=cleanCell(row[ni]);if(!name||/^total\b/i.test(name))return;out.push({id:ii>=0?cleanCell(row[ii]):String(i+1),name,category:ci>=0?cleanCell(row[ci]):'',stock:qi>=0?cleanCell(row[qi]):'',unit:ui>=0?cleanCell(row[ui]):'',rate:ri>=0?cleanCell(row[ri]):''})});
+ if(!out.length){$('fileStatus').textContent='কোনো পণ্য পাওয়া যায়নি।';return}
+ products=out;$('catalogCount').textContent=products.length+' products';$('fileStatus').textContent='সফলভাবে '+products.length+'টি পণ্য লোড হয়েছে।';results=[];renderResults();
+}
+$('fileInput').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+   const buf=await file.arrayBuffer();
+   if(file.name.toLowerCase().endsWith('.csv')){
+     const text=new TextDecoder('utf-8').decode(buf);const rows=parseCSV(text);importRows(rows);
+   }else{
+     const text=new TextDecoder('utf-8').decode(buf);
+     if(/<table|<html/i.test(text)){
+       const doc=new DOMParser().parseFromString(text,'text/html');const table=doc.querySelector('table');if(!table)throw new Error('No table');
+       const rows=[...table.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('th,td')].map(td=>td.innerText.trim()));
+       importRows(rows);
+     }else{
+       if(!window.XLSX)throw new Error('এই ফাইলটি সাধারণ .xlsx। এটি পড়তে ইন্টারনেট সংযোগ লাগবে।');
+       const wb=XLSX.read(buf,{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];importRows(XLSX.utils.sheet_to_json(ws,{header:1,defval:''}));
+     }
+   }
+ }catch(err){$('fileStatus').textContent='ফাইল পড়া যায়নি: '+err.message}
+});
+function parseCSV(text){
+ const rows=[];let row=[],field='',q=false;
+ for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'&&q&&text[i+1]==='"'){field+='"';i++}else if(c==='"'){q=!q}else if(c===','&&!q){row.push(field);field=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);if(row.some(x=>String(x).trim()))rows.push(row);row=[];field=''}else field+=c}
+ row.push(field);if(row.some(x=>String(x).trim()))rows.push(row);return rows;
+}
+renderResults();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</body></html>
